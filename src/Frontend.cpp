@@ -24,6 +24,6 @@ namespace MySlam
         return true;
     }
     bool Track(){
-
+        return true;
     }
 } // namespace MySlam

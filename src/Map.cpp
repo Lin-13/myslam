@@ -10,17 +10,24 @@ namespace MySlam{
             keyframes_.insert({frame->keyframe_id_,frame});
             active_keyframes_.insert({frame->keyframe_id_,frame});
         }else{
-            keyframes_[frame->id_] = frame;
-            active_keyframes_[frame->id_] = frame;
-        }
-        if(active_keyframes_.size() > num_active_frames){
-            RemoveOldKeyFrames();
+            keyframes_[frame->keyframe_id_] = frame;
+            active_keyframes_[frame->keyframe_id_] = frame;
         }
         //directly
         // keyframes_[frame->id_] = frame;
         // activate_keygrames_[frame->id_] = frame;
+        if(active_keyframes_.size() > num_active_frames){
+            RemoveOldKeyFrames();
+        }
     }
     void Map::InsertMapPoint(MapPoint::Ptr map_point){
+        // if(landmarks_.find(map_point->id_) == landmarks_.end()){
+        //     landmarks_.insert({map_point->id_,map_point});
+        //     active_landmarks_.insert({map_point->id_,map_point});
+        // }else{
+        //     landmarks_[map_point->id_] = map_point;
+        //     active_landmarks_[map_point->id_] = map_point;
+        // }
         landmarks_[map_point->id_] = map_point;
         active_landmarks_[map_point->id_] = map_point;
     }
@@ -33,6 +40,8 @@ namespace MySlam{
         }
     }
     void Map::RemoveOldKeyFrames(){
+        int checkpoint = 0;
+        
         if(current_frame_ == nullptr) return;
         double min_dis = 9999,max_dis = 0;
         int min_kf_id,max_kf_id;
@@ -49,18 +58,23 @@ namespace MySlam{
                 min_kf_id = id;
             }
         }
+
         double min_thread;
-        Frame::Ptr frame_remove;
+        Frame::Ptr frame_remove = nullptr;
         unsigned long id_remove;
         if(min_dis < min_thread){
-            frame_remove = keyframes_[min_dis];
+            frame_remove = keyframes_[min_kf_id];
             id_remove = min_dis;
         }else{
-            frame_remove = keyframes_[max_dis];
+            frame_remove = keyframes_[max_kf_id];
             id_remove = max_dis;
         }
+
         //Remove keyframe
-        keyframes_.erase(id_remove);
+        // fmt::print("id to remove :{}",id_remove);
+        // std::cerr << "id to remove " << frame_remove->keyframe_id_ <<std::endl;
+        active_keyframes_.erase(frame_remove->keyframe_id_);
+        
         for(auto& feather : frame_remove->feather1_){
             auto mp = feather->map_point_.lock();
             if(mp){

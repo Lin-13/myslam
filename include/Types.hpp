@@ -6,6 +6,7 @@
 #include <memory>
 #include <mutex>
 #include <sophus/se3.hpp>
+#include <fmt/core.h>
 namespace MySlam{
     enum SLAM_TYPE{
         Mono,

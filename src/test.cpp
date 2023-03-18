@@ -20,32 +20,38 @@
 using namespace MySlam;
 int test_frame(){
     std::vector<std::shared_ptr<Frame>> frames;
-    std::unordered_map<unsigned int,Frame::Ptr> frame_map;
-    int frame_num = 300;
+    std::unordered_map<unsigned long,Frame::Ptr> frame_map;
+    int frame_num = 100;
     Vec3 t(0,0,1);
     Mat33 R = Eigen::AngleAxisd(0,Vec3(0,0,1)).toRotationMatrix();
+    Map::Ptr map = std::make_shared<Map>();
     for(int i = 0;i<frame_num;i++){
         fmt::print("Frames create:\t{}:\t{}\r",i+1,frame_num);
         std::shared_ptr<Frame> frame = Frame::Create_Frame();
         frame ->setKeyFrame();
-        t << 0,0,-i*0.01;
-        SE3 pose(R,t);
-        pose.translation();
-        frame ->setPose(pose);
         frames.push_back(frame);
         frame_map.insert({frame->keyframe_id_,frame});
-        
     }
     fmt::print("\n");
     Viewer view;
-    Map::Ptr map = std::make_shared<Map>();
+    
+    view.setMap(map);
     // fmt::print("\nimshow:\n");
+    int i=1;
     for(auto& frame : frames){
-        fmt::print("id:{},key_id:{}\r",frame->id_, frame->keyframe_id_);
-        // cv::imshow("Frame",frame->img1_);
+        fmt::print("id:{}\t,key_id:{}\r",frame->id_, frame->keyframe_id_);
+        t << 0,0,-i*0.01;
+        i++;
+        SE3 pose(R,t);
+        frame ->setPose(pose);
+        t << 1,0,i*0.01;
+        MapPoint::Ptr point = std::make_shared<MapPoint>(i,Vec3(t));
+        
         view.addCurrentFrame(frame);
-        // view.setMap(map);
-        cv::waitKey(30);
+        map->InsertMapPoint(point);
+        map->InsertKeyFrame(frame);
+        view.updateMap();
+        cv::waitKey(25);
     }
     view.Close();
     cv::destroyAllWindows();

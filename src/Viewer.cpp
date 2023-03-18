@@ -132,14 +132,20 @@ namespace MySlam{
     }
     void Viewer::DrawMappoints(){
         const float red[3] = {1,0,0};
-        for(auto& [id, kf]: activate_keyframes_){
-            DrawFrame(kf,red);
-        }
+        const float black[3] = {0,0,0};
         glPointSize(2);
         glBegin(GL_POINTS);
+        for(auto& [id, kf]: activate_keyframes_){
+            Vec3 pos = kf->getPose().inverse().translation();
+            // std::cout << pos.transpose() <<std::endl;
+            glColor3fv(black);
+            glVertex3f(pos[0],pos[1],pos[2]);
+        }
+        glEnd();
+        glBegin(GL_POINTS);
         for(auto& [id,landmark] : activate_landmakrs_){
-            auto pos = landmark->getPose();
-            glColor3f(red[0],red[1],red[2]);
+            auto pos = landmark->getPose().template cast<float>();
+            glColor3fv(black);
             glVertex3f(pos[0],pos[1],pos[2]);
         }
         glEnd();
