@@ -14,8 +14,8 @@ namespace MySlam
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
         typedef std::shared_ptr<Frame> Ptr;
-        unsigned int id_ = 0;
-        unsigned int keyframe_id_ = 0;
+        unsigned long id_ = 0;
+        unsigned long keyframe_id_ = 0;
         bool is_keyframe = false;
         double time_stamp_;
         SE3 pose_;
@@ -45,7 +45,7 @@ namespace MySlam
             keyframe_id_ = keyframe_num;
             keyframe_num ++;
         }
-        static std::shared_ptr<Frame> Create_Frame(SLAM_TYPE);
+        static std::shared_ptr<Frame> Create_Frame(SLAM_TYPE type = SLAM_TYPE::Mono);
     };
 } // namespace MySlam
 #endif

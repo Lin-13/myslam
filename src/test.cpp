@@ -8,30 +8,47 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/sfm.hpp>
 #include <opencv2/highgui.hpp>
-
+#include <Types.hpp>
 #include <g2oTypes.hpp>
 #include <Frame.hpp>
 #include <Feather.hpp>
 #include <Map.hpp>
 #include <MapPoint.hpp>
+#include <Viewer.hpp>
 //Front end
 #include <Frontend.hpp>
 using namespace MySlam;
 int test_frame(){
     std::vector<std::shared_ptr<Frame>> frames;
+    std::unordered_map<unsigned int,Frame::Ptr> frame_map;
     int frame_num = 300;
+    Vec3 t(0,0,1);
+    Mat33 R = Eigen::AngleAxisd(0,Vec3(0,0,1)).toRotationMatrix();
     for(int i = 0;i<frame_num;i++){
         fmt::print("Frames create:\t{}:\t{}\r",i+1,frame_num);
-        std::shared_ptr<Frame> frame = Frame::Create_Frame(MySlam::Mono);
+        std::shared_ptr<Frame> frame = Frame::Create_Frame();
         frame ->setKeyFrame();
+        t << 0,0,-i*0.01;
+        SE3 pose(R,t);
+        pose.translation();
+        frame ->setPose(pose);
         frames.push_back(frame);
+        frame_map.insert({frame->keyframe_id_,frame});
+        
     }
-    fmt::print("\nimshow:\n");
+    fmt::print("\n");
+    Viewer view;
+    Map::Ptr map = std::make_shared<Map>();
+    // fmt::print("\nimshow:\n");
     for(auto& frame : frames){
         fmt::print("id:{},key_id:{}\r",frame->id_, frame->keyframe_id_);
-        cv::imshow("Frame",frame->img1_);
+        // cv::imshow("Frame",frame->img1_);
+        view.addCurrentFrame(frame);
+        // view.setMap(map);
         cv::waitKey(30);
     }
+    view.Close();
+    cv::destroyAllWindows();
     return 0;
 }
 int test_opencv(){
@@ -60,12 +77,13 @@ int test_opencv(){
         cv::imshow("Frame",img);
         cv::waitKey(30);
     }
+    MySlam::Frame::Create_Frame(SLAM_TYPE::Mono);
     // cv::sfm::reconstruct(imgs,Rs_est,ts_est,K,pointcloud3d,is_projective);
     return 1;
 }
 int main(int argc,char**argv){
-    // test_frame();
-    test_opencv();
+    test_frame();
+    // test_opencv();
 }
 void pose_estimate(cv::Mat& img1,cv::Mat& img2){
     std::vector<cv::KeyPoint> keypoint1,keypoint2;

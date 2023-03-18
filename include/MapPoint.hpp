@@ -23,6 +23,10 @@ namespace MySlam{
         MapPoint(){};
         MapPoint(long id,Vec3 position) :
             id_(id),pos_(position){}
+        Vec3 getPose(){
+            std::lock_guard<std::mutex> lck(data_mutex);
+            return pos_;
+        }
         void setPose(const Vec3 &pos){
             std::lock_guard<std::mutex> lck(data_mutex);
             pos_ = pos;

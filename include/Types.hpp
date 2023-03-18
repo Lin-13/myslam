@@ -1,6 +1,10 @@
 #ifndef SLAM_TYPE_HPP
 #define SLAM_TYPE_HPP
 #include <Eigen/Core>
+#include <stdlib.h>
+#include <unistd.h>
+#include <memory>
+#include <mutex>
 #include <sophus/se3.hpp>
 namespace MySlam{
     enum SLAM_TYPE{
