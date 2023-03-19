@@ -1,6 +1,6 @@
 #include <MapPoint.hpp>
 namespace MySlam{
-    void MapPoint::RemoveObservation(std::shared_ptr<Feather> feather){
+    void MapPoint::RemoveObservation(std::shared_ptr<Feature> feather){
         for(auto obs = observations_.begin();obs != observations_.end();obs++){
             if(obs->lock() == feather){
                 obs = observations_.erase(obs);

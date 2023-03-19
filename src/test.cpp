@@ -12,7 +12,7 @@
 #include <Types.hpp>
 #include <g2oTypes.hpp>
 #include <Frame.hpp>
-#include <Feather.hpp>
+#include <Feature.hpp>
 #include <Map.hpp>
 #include <MapPoint.hpp>
 #include <Viewer.hpp>
@@ -34,13 +34,16 @@ int test_map(){
         if(i >=1){
             cv::Mat R,t;
             pose_estimate(frame_before->img1_,frame->img1_,R,t);
-            frame->setPose(Mat2SE3(R,t) * frame_before->getPose());
+            frame->setPose(Mat2SE3(R,t) * (frame_before->getPose()));
         }
         frame->setKeyFrame();
         view.addCurrentFrame(frame);
         map->InsertKeyFrame(frame);
         view.updateMap();
         frame_before = frame;
+        if(i%20 == 0){
+            std::cout << "Pos:\n" << frame->getPose().matrix() << std::endl;
+        }
     }
     auto loop_end = std::chrono::steady_clock::now();
     auto time = loop_end - loop_start;
@@ -63,6 +66,7 @@ int test_frame(){
         frame_map.insert({frame->keyframe_id_,frame});
         fmt::print("Frames create:\t{}:\t{},({},{})\r",i+1,frame_num,frame->img1_.cols,frame->img1_.rows);
         usleep(100000);
+        
     }
     fmt::print("\n");
     Viewer view;
@@ -145,7 +149,7 @@ void pose_estimate(cv::Mat& img1,cv::Mat& img2,cv::Mat& R,cv::Mat& t){
     // fmt::print("{} Matching...\n",__func__);
     std::vector<cv::KeyPoint> keypoint1,keypoint2;
     cv::Mat descriptors1,descriptors2;
-    static int nfeatures = 500;
+    static int nfeatures = 1000;
     //Detector
     static cv::Ptr<cv::FeatureDetector> detector = cv::ORB::create(nfeatures);
     static cv::Ptr<cv::DescriptorExtractor> descriptor = cv::ORB::create();
@@ -165,7 +169,7 @@ void pose_estimate(cv::Mat& img1,cv::Mat& img2,cv::Mat& R,cv::Mat& t){
         std::cout << "matches < 5,exit\n";
         return;
     }
-    // std::sort(matches.begin(),matches.end(),[](cv::DMatch& left,cv::DMatch& right)->bool{ return left.distance < right.distance;});
+    std::sort(matches.begin(),matches.end(),[](cv::DMatch& left,cv::DMatch& right)->bool{ return left.distance < right.distance;});
     int match_num = 50;
     std::vector<cv::Point2f> points1,points2;
     for(int i = 0;i < matches.size();i++){

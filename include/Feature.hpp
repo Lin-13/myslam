@@ -9,17 +9,17 @@
 namespace MySlam{
     class Frame;
     class MapPoint;
-    class Feather{
+    class Feature{
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
-        typedef std::shared_ptr<Feather> Ptr;
+        typedef std::shared_ptr<Feature> Ptr;
         std::weak_ptr<Frame> frame_;
         cv::KeyPoint position_;
         std::weak_ptr<MapPoint> map_point_;
         bool is_outlier_ = false;
         bool is_on_left_image_ = true;
-        Feather(){}
-        Feather(std::shared_ptr<Frame>frame,std::shared_ptr<MapPoint> map_point):
+        Feature(){}
+        Feature(std::shared_ptr<Frame>frame,std::shared_ptr<MapPoint> map_point):
             frame_(frame),map_point_(map_point){}
     };
 }

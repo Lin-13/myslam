@@ -1,7 +1,7 @@
 #pragma once
 #include <MapPoint.hpp>
 #include <Frame.hpp>
-#include <Feather.hpp>
+#include <Feature.hpp>
 #include <Eigen/Core>
 #include <memory>
 #include <mutex>
@@ -9,7 +9,7 @@
 #include <Types.hpp>
 namespace MySlam{
     class Frame;
-    class Feather;
+    class Feature;
     class MapPoint;
     class Map{
     public:

@@ -9,7 +9,7 @@
 #include <Types.hpp>
 namespace MySlam
 {
-    class Feather;
+    class Feature;
     class Frame{
     public:
         EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
@@ -24,7 +24,7 @@ namespace MySlam
         cv::Mat img1_,img2_;
 
         //Feather
-        std::vector<std::shared_ptr<Feather>> feather1_,feather2_;
+        std::vector<std::shared_ptr<Feature>> feather1_,feather2_;
         // cv::Mat color_img_,depth_img_;
         Frame() = default;
         Frame(long id, double time_stamp, Sophus::SE3d& pose, cv::Mat& left, cv::Mat&right):
