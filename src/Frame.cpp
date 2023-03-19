@@ -12,6 +12,7 @@ namespace MySlam{
         if(type == SLAM_TYPE::Mono){
             try{
                 cap.read(img);
+                assert(!img.empty());
                 frame = std::make_shared<Frame>(frame_num,1,pose,img);
             }catch(cv::Exception&e){
                 std::cout << "Create_Frame raise an error: \n" << e.what() << std::endl;

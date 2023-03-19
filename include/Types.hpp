@@ -18,5 +18,6 @@ namespace MySlam{
     typedef Sophus::SE3d SE3;
 
     typedef Eigen::Matrix<double,3,3> Mat33;
+    typedef Eigen::Matrix<double,4,4> Mat44;
 }
 #endif

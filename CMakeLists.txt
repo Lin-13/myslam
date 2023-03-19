@@ -34,8 +34,13 @@ target_link_libraries(
     ${PROJECT_NAME}
     fmt
     ${OpenCV_LIBS}
+    opencv_sfm
 )
 install(TARGETS test
+    DESTINATION
+    ${CMAKE_SOURCE_DIR}/bin
+)
+install(TARGETS ${PROJECT_NAME}
     DESTINATION
     ${CMAKE_SOURCE_DIR}/bin
 )
