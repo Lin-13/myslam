@@ -16,6 +16,7 @@
 #include <Map.hpp>
 #include <MapPoint.hpp>
 #include <Viewer.hpp>
+#include <Camera.hpp>
 //Front end
 #include <Frontend.hpp>
 using namespace MySlam;
@@ -151,6 +152,8 @@ void pose_estimate(cv::Mat& img1,cv::Mat& img2,cv::Mat& R,cv::Mat& t){
     cv::Mat descriptors1,descriptors2;
     static int nfeatures = 1000;
     //Detector
+    static cv::Ptr<cv::GFTTDetector> gfdetector;
+    // gfdetector->detectAndCompute(img1,cv::noArray(),keypoint1,descriptors1);
     static cv::Ptr<cv::FeatureDetector> detector = cv::ORB::create(nfeatures);
     static cv::Ptr<cv::DescriptorExtractor> descriptor = cv::ORB::create();
     static cv::Ptr<cv::DescriptorMatcher> matcher = cv::DescriptorMatcher::create("BruteForce-Hamming");

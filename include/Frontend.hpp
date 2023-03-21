@@ -22,7 +22,7 @@ namespace MySlam{
         void setCamera(Camera::Ptr left){camera_ = left;}
     private:
         bool Track();
-        bool TrackLaskFrame();
+        int TrackLastFrame();
         int EstimateCurrentPose();
         bool InsertKeyframe();
         int DetectFeatures();

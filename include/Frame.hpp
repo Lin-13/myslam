@@ -24,7 +24,7 @@ namespace MySlam
         cv::Mat img1_,img2_;
 
         //Feather
-        std::vector<std::shared_ptr<Feature>> feather1_,feather2_;
+        std::vector<std::shared_ptr<Feature>> feature1_,feature2_;
         // cv::Mat color_img_,depth_img_;
         Frame() = default;
         Frame(long id, double time_stamp, Sophus::SE3d& pose, cv::Mat& left, cv::Mat&right):

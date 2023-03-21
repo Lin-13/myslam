@@ -75,16 +75,16 @@ namespace MySlam{
         // std::cerr << "id to remove " << frame_remove->keyframe_id_ <<std::endl;
         active_keyframes_.erase(frame_remove->keyframe_id_);
         
-        for(auto& feather : frame_remove->feather1_){
-            auto mp = feather->map_point_.lock();
+        for(auto& feature : frame_remove->feature1_){
+            auto mp = feature->map_point_.lock();
             if(mp){
-                mp->RemoveObservation(feather);
+                mp->RemoveObservation(feature);
             }
         }
-        for(auto& feather : frame_remove->feather2_){
-            auto mp = feather->map_point_.lock();
+        for(auto& feature : frame_remove->feature2_){
+            auto mp = feature->map_point_.lock();
             if(mp){
-                mp->RemoveObservation(feather);
+                mp->RemoveObservation(feature);
             }
         }
     }
