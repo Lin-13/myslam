@@ -20,7 +20,7 @@ add_library(${PROJECT_NAME}
     src/Camera.cpp
     src/Frontend.cpp
     src/Viewer.cpp
-        src/Backend.cpp src/Backend.h)
+    src/Backend.cpp)
 target_link_libraries(
     ${PROJECT_NAME}
     pango_display

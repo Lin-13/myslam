@@ -30,7 +30,8 @@ namespace MySlam
         extractor_ = cv::ORB::create();
         matcher_ = cv::DescriptorMatcher::create("BruteForce-Hamming");
         n_features = 300;
-        camera_ = Camera(520,520,320,240);
+        Sophus::SE3d pose;
+        camera_ = std::make_shared<Camera>(520,520,320,240,pose);
     }
     bool Frontend::Track(){
         return true;
