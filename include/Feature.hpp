@@ -18,7 +18,7 @@ namespace MySlam{
         std::weak_ptr<MapPoint> map_point_;
         bool is_outlier_ = false;
         bool is_on_left_image_ = true;
-        Feature(){}
+        Feature ()= default;
         Feature(std::shared_ptr<Frame>frame,std::shared_ptr<MapPoint> map_point):
             frame_(frame),map_point_(map_point){}
     };

@@ -2,7 +2,6 @@
 #include <vector>
 #include <algorithm>
 #include <chrono>
-#define CERES_FOUND 1
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/features2d.hpp>

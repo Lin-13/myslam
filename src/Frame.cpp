@@ -1,4 +1,3 @@
-#include <mutex>
 #include <opencv2/opencv.hpp>
 
 #include <Frame.hpp>
@@ -12,7 +11,10 @@ namespace MySlam{
         if(type == SLAM_TYPE::Mono){
             try{
                 cap.read(img);
-                assert(!img.empty());
+//                assert(!img.empty());
+                if(img.empty()){
+                    CV_Assert("Empty img");
+                }
                 frame = std::make_shared<Frame>(frame_num,1,pose,img);
             }catch(cv::Exception&e){
                 std::cout << "Create_Frame raise an error: \n" << e.what() << std::endl;
@@ -21,4 +23,4 @@ namespace MySlam{
         frame_num ++;
         return frame;
     }
-};
+}

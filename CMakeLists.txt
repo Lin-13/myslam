@@ -11,7 +11,7 @@ find_package(G2O REQUIRED)
 find_package(Pangolin 0.8 REQUIRED)
 
 include_directories(include ${OpenCV_INCLUDE_DIR} ${Pangolin_INCLUDE_DIRS})
-add_executable(test src/test.cpp)
+add_executable(test src/test.cpp src/Backend.cpp)
 add_library(${PROJECT_NAME} 
     STATIC 
     src/Frame.cpp
@@ -20,7 +20,7 @@ add_library(${PROJECT_NAME}
     src/Camera.cpp
     src/Frontend.cpp
     src/Viewer.cpp
-)
+        src/Backend.cpp src/Backend.h)
 target_link_libraries(
     ${PROJECT_NAME}
     pango_display

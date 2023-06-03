@@ -19,17 +19,21 @@ namespace MySlam{
             std::lock_guard<std::mutex> lck(data_mutex_);
             return pose_;
         }
-    Vec3 world2camera(const Vec3 &p_w, const SE3 &T_c_w);
+        Mat33 K(){
+            Mat33 K;
+            K << fx_, 0, cx_, 0, fy_, cy_, 0, 0, 1;
+            return K;
+        }
+        Vec3 world2camera(const Vec3 &p_w, const SE3 &T_c_w);
 
-    Vec3 camera2world(const Vec3 &p_c, const SE3 &T_c_w);
+        Vec3 camera2world(const Vec3 &p_c, const SE3 &T_c_w);
 
-    Vec2 camera2pixel(const Vec3 &p_c);
+        Vec2 camera2pixel(const Vec3 &p_c);
 
-    Vec3 pixel2camera(const Vec2 &p_p, double depth = 1);
+        Vec3 pixel2camera(const Vec2 &p_p, double depth = 1);
+        Vec3 pixel2world(const Vec2 &p_p, const SE3 &T_c_w, double depth = 1);
 
-    Vec3 pixel2world(const Vec2 &p_p, const SE3 &T_c_w, double depth = 1);
-
-    Vec2 world2pixel(const Vec3 &p_w, const SE3 &T_c_w);
+        Vec2 world2pixel(const Vec3 &p_w, const SE3 &T_c_w);
 
         
     };

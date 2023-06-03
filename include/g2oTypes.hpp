@@ -8,6 +8,7 @@
 #include <g2o/core/optimization_algorithm_gauss_newton.h>
 #include <g2o/core/optimization_algorithm_levenberg.h>
 #include <g2o/core/robust_kernel_impl.h>
+#include <g2o/solvers/csparse/linear_solver_csparse.h>
 
 namespace MySlam
 {
@@ -21,8 +22,8 @@ namespace MySlam
             , update[3] , update[4] , update[5] ;
             _estimate = SE3::exp(update_) * _estimate;
         }
-        virtual bool read(std::istream& in) { return 1;}
-        virtual bool write(std::istream& out) {return 1;}
+        virtual bool read(std::istream& in) override { return 1;}
+        virtual bool write(std::ostream& os) const override {return 1;}
     };
     //landMark Vertex
     class VertexXYZ :public g2o::BaseVertex<3,Vec3>{
@@ -36,7 +37,7 @@ namespace MySlam
 
         }
         virtual bool read(std::istream& in) { return 1;}
-        virtual bool write(std::istream& out) {return 1;}
+        virtual bool write(std::ostream& out) const {return 1;}
     };
     class EdgeProjectionPoseOnly : public g2o::BaseUnaryEdge<2,Vec2,VertexPose>{
     public:
